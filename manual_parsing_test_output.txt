@@ -1,0 +1,1009 @@
+(node:25607) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+> SwarmOS@0.0.1 test
+> jest --verbose
+
+(node:25629) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:25781) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:25788) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:25782) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+FAIL tests/AgentRegistry.spec.ts (7.696 s)
+  AgentRegistry
+    ✓ deploys with 0 agents (554 ms)
+    ✓ owner is set correctly (125 ms)
+    ✕ registers agent successfully (125 ms)
+    ✓ rejects stake below minimum (164 ms)
+    ✕ rejects duplicate registration (340 ms)
+    ✕ registers two agents independently (180 ms)
+    ✓ updates agent listing (149 ms)
+    ✓ rejects update from unregistered agent (163 ms)
+    ✓ deactivates agent (276 ms)
+    ✕ rejects double deactivation (156 ms)
+    ✓ reactivates agent (120 ms)
+    ✕ rejects activate on already active agent (101 ms)
+
+  ● AgentRegistry › registers agent successfully
+
+    Expected [
+      {
+        lt: 6000000n,
+        now: 1774201733,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1747063n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: undefined,
+        ec: undefined,
+        body: x{E58AA372FAF4C76AD1DA6A4413589D8D61538B48A782EF44A353E29029F819C9C_}
+         x{D001}
+          x{62001EB3CBC59FE356F01BC91F7E31D0B24F907098A26C34E104B92E86C5EAB850A921DCD6500000000000000000000000000000000010010139896801234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '3851068274',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 7000000n,
+        now: 1774201733,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 936131n,
+        mode: 1,
+        from: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        to: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        on: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        value: 1000000000n,
+        ec: [],
+        body: x{000010010139896801234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '4097',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 8,
+        actionResultCode: undefined,
+        success: false,
+        failReason: { message: 'Cell overflow' }
+      },
+      {
+        lt: 8000000n,
+        now: 1774201733,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: 998797200n,
+        ec: [],
+        body: x{FFFFFFFF000010010139896801234567890ABCDEF1234567890ABCDEF1234567890ABCDE},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern {
+      from: EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a,
+      to: EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt,
+      success: true
+    }
+
+      45 |             stake:        toNano('1'),
+      46 |         });
+    > 47 |         expect(tx.transactions).toHaveTransaction({
+         |                                 ^
+      48 |             from: agent1.address, to: registry.address, success: true,
+      49 |         });
+      50 |         expect(await registry.getAgentCount()).toBe(1);
+
+      at Object.<anonymous> (tests/AgentRegistry.spec.ts:47:33)
+
+  ● AgentRegistry › rejects duplicate registration
+
+    Expected [
+      {
+        lt: 9000000n,
+        now: 1774201734,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1747063n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: undefined,
+        ec: undefined,
+        body: x{E58AA372FAF4C76AD1DA6A4413589D8D61538B48A782EF44A353E29029F819C9C_}
+         x{D001}
+          x{62001EB3CBC59FE356F01BC91F7E31D0B24F907098A26C34E104B92E86C5EAB850A921DCD6500000000000000000000000000000000010010139896801234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '3851068274',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 10000000n,
+        now: 1774201734,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 936131n,
+        mode: 1,
+        from: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        to: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        on: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        value: 1000000000n,
+        ec: [],
+        body: x{000010010139896801234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '4097',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 8,
+        actionResultCode: undefined,
+        success: false,
+        failReason: { message: 'Cell overflow' }
+      },
+      {
+        lt: 11000000n,
+        now: 1774201734,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: 998797200n,
+        ec: [],
+        body: x{FFFFFFFF000010010139896801234567890ABCDEF1234567890ABCDEF1234567890ABCDE},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 1001 }
+
+      73 |             endpointHash: HASH, stake: toNano('1'),
+      74 |         });
+    > 75 |         expect(tx.transactions).toHaveTransaction({
+         |                                 ^
+      76 |             success: false, exitCode: 1001,
+      77 |         });
+      78 |     });
+
+      at Object.<anonymous> (tests/AgentRegistry.spec.ts:75:33)
+
+  ● AgentRegistry › registers two agents independently
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2
+    Received: 0
+
+      87 |             endpointHash: HASH + 1n, stake: toNano('1'),
+      88 |         });
+    > 89 |         expect(await registry.getAgentCount()).toBe(2);
+         |                                                ^
+      90 |     });
+      91 |
+      92 |     it('updates agent listing', async () => {
+
+      at Object.<anonymous> (tests/AgentRegistry.spec.ts:89:48)
+
+  ● AgentRegistry › rejects double deactivation
+
+    Expected [
+      {
+        lt: 12000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1573731n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: undefined,
+        ec: undefined,
+        body: x{E58AA372FAF4C76AD1DA6A4413589D8D61538B48A782EF44A353E29029F819C9C_}
+         x{D001}
+          x{62001EB3CBC59FE356F01BC91F7E31D0B24F907098A26C34E104B92E86C5EAB850A92017D784000000000000000000000000000000001003},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '3851068274',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 13000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 722931n,
+        mode: 1,
+        from: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        to: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        on: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        value: 50000000n,
+        ec: [],
+        body: x{00001003},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '4099',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 1002,
+        actionResultCode: undefined,
+        success: false,
+        failReason: undefined
+      },
+      {
+        lt: 14000000n,
+        now: 1774201735,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: 49010400n,
+        ec: [],
+        body: x{FFFFFFFF00001003},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 1004 }
+
+      126 |         await registry.sendDeactivateAgent(agent1.getSender());
+      127 |         const tx = await registry.sendDeactivateAgent(agent1.getSender());
+    > 128 |         expect(tx.transactions).toHaveTransaction({ success: false, exitCode: 1004 });
+          |                                 ^
+      129 |     });
+      130 |
+      131 |     it('reactivates agent', async () => {
+
+      at Object.<anonymous> (tests/AgentRegistry.spec.ts:128:33)
+
+  ● AgentRegistry › rejects activate on already active agent
+
+    Expected [
+      {
+        lt: 9000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1573731n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: undefined,
+        ec: undefined,
+        body: x{E58AA372FAF4C76AD1DA6A4413589D8D61538B48A782EF44A353E29029F819C9C_}
+         x{D001}
+          x{62001EB3CBC59FE356F01BC91F7E31D0B24F907098A26C34E104B92E86C5EAB850A92017D784000000000000000000000000000000001004},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '3851068274',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 10000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 750931n,
+        mode: 1,
+        from: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        to: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        on: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        value: 50000000n,
+        ec: [],
+        body: x{00001004},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '4100',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 1002,
+        actionResultCode: undefined,
+        success: false,
+        failReason: undefined
+      },
+      {
+        lt: 11000000n,
+        now: 1774201735,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQA9Z5eLP8at4DeSPvxjoWSfIOExRNhpwglyXQ2L1XChUuFt (AgentRegistry)',
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: 48982400n,
+        ec: [],
+        body: x{FFFFFFFF00001004},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 1005 }
+
+      145 |         });
+      146 |         const tx = await registry.sendActivateAgent(agent1.getSender());
+    > 147 |         expect(tx.transactions).toHaveTransaction({ success: false, exitCode: 1005 });
+          |                                 ^
+      148 |     });
+      149 | });
+
+      at Object.<anonymous> (tests/AgentRegistry.spec.ts:147:33)
+
+FAIL tests/SwarmCoordinator.spec.ts (8.277 s)
+  SwarmCoordinator
+    ✓ deploys with nextTaskId = 0 (581 ms)
+    ✓ deploys with 0 accumulated fees (125 ms)
+    ✕ posts task and increments ID (164 ms)
+    ✓ rejects post task with payment below minimum (287 ms)
+    ✓ bids on open task (178 ms)
+    ✕ rejects bid above budget (151 ms)
+    ✕ rejects duplicate bid from same agent (191 ms)
+    ✓ accepts bid (377 ms)
+    ✕ rejects accept from non-poster (173 ms)
+    ✓ full lifecycle: post → bid → accept → submit → verify (173 ms)
+    ✓ cancels task with no bids and refunds poster (176 ms)
+    ✕ cannot cancel task that has bids (127 ms)
+    ✓ rejects operations on non-existent task (105 ms)
+    ✕ two tasks can coexist independently (199 ms)
+
+  ● SwarmCoordinator › posts task and increments ID
+
+    Expected [
+      {
+        lt: 7000000n,
+        now: 1774201733,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1749197n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        on: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        value: undefined,
+        ec: undefined,
+        body: x{EF0FC53D3CA741F9EDCCB7371B113012737EA3923C4ABFA5DE99917603F7CB53C_}
+         x{D001}
+          x{62007BEABE37ABB2B59F7B00B97B1464075BC9ECFA29455E8ECC799B157038504BC021DCD650000000000000000000000000000000002001ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF12345678900100000E10},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '4010788157',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 8000000n,
+        now: 1774201733,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1025331n,
+        mode: 1,
+        from: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        to: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        on: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        value: 1000000000n,
+        ec: [],
+        body: x{00002001ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF12345678900100000E10},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '8193',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 8,
+        actionResultCode: undefined,
+        success: false,
+        failReason: { message: 'Cell overflow' }
+      },
+      {
+        lt: 9000000n,
+        now: 1774201733,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        to: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        on: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        value: 998708000n,
+        ec: [],
+        body: x{FFFFFFFF00002001ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF12},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern {
+      from: EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X,
+      to: EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3,
+      success: true
+    }
+
+      51 |             workDeadlineDelta: 3600, payment: toNano('1'),
+      52 |         });
+    > 53 |         expect(tx.transactions).toHaveTransaction({
+         |                                 ^
+      54 |             from: poster.address, to: coordinator.address, success: true,
+      55 |         });
+      56 |         expect(await coordinator.getNextTaskId()).toBe(1n);
+
+      at Object.<anonymous> (tests/SwarmCoordinator.spec.ts:53:33)
+
+  ● SwarmCoordinator › rejects bid above budget
+
+    Expected [
+      {
+        lt: 10000000n,
+        now: 1774201734,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1798263n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: undefined,
+        ec: undefined,
+        body: x{E58AA372FAF4C76AD1DA6A4413589D8D61538B48A782EF44A353E29029F819C9C_}
+         x{D001}
+          x{62007BEABE37ABB2B59F7B00B97B1464075BC9ECFA29455E8ECC799B157038504BC02017D784000000000000000000000000000000002002000000000000000047735940000000708DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '3851068274',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 11000000n,
+        now: 1774201734,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 710131n,
+        mode: 1,
+        from: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        to: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        on: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        value: 50000000n,
+        ec: [],
+        body: x{00002002000000000000000047735940000000708DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '8194',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 2001,
+        actionResultCode: undefined,
+        success: false,
+        failReason: undefined
+      },
+      {
+        lt: 12000000n,
+        now: 1774201734,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: 49023200n,
+        ec: [],
+        body: x{FFFFFFFF00002002000000000000000047735940000000708DEADBEEFDEADBEEFDEADBEE},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 2006 }
+
+      84 |             taskId: 0n, amount: toNano('2'), deliveryTime: 1800, proposalHash: PROPOSAL_HASH,
+      85 |         });
+    > 86 |         expect(tx.transactions).toHaveTransaction({ success: false, exitCode: 2006 });
+         |                                 ^
+      87 |     });
+      88 |
+      89 |     it('rejects duplicate bid from same agent', async () => {
+
+      at Object.<anonymous> (tests/SwarmCoordinator.spec.ts:86:33)
+
+  ● SwarmCoordinator › rejects duplicate bid from same agent
+
+    Expected [
+      {
+        lt: 13000000n,
+        now: 1774201734,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1798263n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: undefined,
+        ec: undefined,
+        body: x{E58AA372FAF4C76AD1DA6A4413589D8D61538B48A782EF44A353E29029F819C9C_}
+         x{D001}
+          x{62007BEABE37ABB2B59F7B00B97B1464075BC9ECFA29455E8ECC799B157038504BC02017D7840000000000000000000000000000000020020000000000000000429B9270000000708DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '3851068274',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 14000000n,
+        now: 1774201734,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 710131n,
+        mode: 1,
+        from: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        to: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        on: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        value: 50000000n,
+        ec: [],
+        body: x{000020020000000000000000429B9270000000708DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '8194',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 2001,
+        actionResultCode: undefined,
+        success: false,
+        failReason: undefined
+      },
+      {
+        lt: 15000000n,
+        now: 1774201734,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        to: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        on: 'EQCxNgtQozaeZx7M-XvDWG5DTDIo1RJb-ls5r7MsMKEPaf7a (TreasuryContract-agent1)',
+        value: 49023200n,
+        ec: [],
+        body: x{FFFFFFFF000020020000000000000000429B9270000000708DEADBEEFDEADBEEFDEADBEE},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 2009 }
+
+       98 |             taskId: 0n, amount: toNano('0.7'), deliveryTime: 1800, proposalHash: PROPOSAL_HASH,
+       99 |         });
+    > 100 |         expect(tx.transactions).toHaveTransaction({ success: false, exitCode: 2009 });
+          |                                 ^
+      101 |     });
+      102 |
+      103 |     it('accepts bid', async () => {
+
+      at Object.<anonymous> (tests/SwarmCoordinator.spec.ts:100:33)
+
+  ● SwarmCoordinator › rejects accept from non-poster
+
+    Expected [
+      {
+        lt: 13000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1767863n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQCxxi8WyoB1nZcDRBJE1MwrvNp7b1kvBbbONDEMfXOiyEjt (TreasuryContract-agent2)',
+        on: 'EQCxxi8WyoB1nZcDRBJE1MwrvNp7b1kvBbbONDEMfXOiyEjt (TreasuryContract-agent2)',
+        value: undefined,
+        ec: undefined,
+        body: x{27E48CF4DD275756E6F454DD68C50C159C1D9B4A83E680565945201F56C6773BC_}
+         x{D001}
+          x{62007BEABE37ABB2B59F7B00B97B1464075BC9ECFA29455E8ECC799B157038504BC02017D7840000000000000000000000000000000020030000000000000000801626C16A1466D3CCE3D99F2F786B0DC86986451AA24B7F4B6735F665861421ED3_},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '669289716',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 14000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 771731n,
+        mode: 1,
+        from: 'EQCxxi8WyoB1nZcDRBJE1MwrvNp7b1kvBbbONDEMfXOiyEjt (TreasuryContract-agent2)',
+        to: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        on: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        value: 50000000n,
+        ec: [],
+        body: x{000020030000000000000000801626C16A1466D3CCE3D99F2F786B0DC86986451AA24B7F4B6735F665861421ED3_},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '8195',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 2001,
+        actionResultCode: undefined,
+        success: false,
+        failReason: undefined
+      },
+      {
+        lt: 15000000n,
+        now: 1774201735,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        to: 'EQCxxi8WyoB1nZcDRBJE1MwrvNp7b1kvBbbONDEMfXOiyEjt (TreasuryContract-agent2)',
+        on: 'EQCxxi8WyoB1nZcDRBJE1MwrvNp7b1kvBbbONDEMfXOiyEjt (TreasuryContract-agent2)',
+        value: 48961600n,
+        ec: [],
+        body: x{FFFFFFFF000020030000000000000000801626C16A1466D3CCE3D99F2F786B0DC8698645},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 2004 }
+
+      126 |             taskId: 0n, agent: agent1.address,
+      127 |         });
+    > 128 |         expect(tx.transactions).toHaveTransaction({ success: false, exitCode: 2004 });
+          |                                 ^
+      129 |     });
+      130 |
+      131 |     it('full lifecycle: post → bid → accept → submit → verify', async () => {
+
+      at Object.<anonymous> (tests/SwarmCoordinator.spec.ts:128:33)
+
+  ● SwarmCoordinator › cannot cancel task that has bids
+
+    Expected [
+      {
+        lt: 13000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1599331n,
+        mode: undefined,
+        from: undefined,
+        to: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        on: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        value: undefined,
+        ec: undefined,
+        body: x{EF0FC53D3CA741F9EDCCB7371B113012737EA3923C4ABFA5DE99917603F7CB53C_}
+         x{D001}
+          x{62007BEABE37ABB2B59F7B00B97B1464075BC9ECFA29455E8ECC799B157038504BC02017D7840000000000000000000000000000000020070000000000000000},
+        inMessageBounced: undefined,
+        inMessageBounceable: undefined,
+        op: '4010788157',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      },
+      {
+        lt: 14000000n,
+        now: 1774201735,
+        outMessagesCount: 1,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 1011731n,
+        mode: 1,
+        from: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        to: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        on: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        value: 50000000n,
+        ec: [],
+        body: x{000020070000000000000000},
+        inMessageBounced: false,
+        inMessageBounceable: true,
+        op: '8199',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: true,
+        destroyed: false,
+        exitCode: 2001,
+        actionResultCode: undefined,
+        success: false,
+        failReason: undefined
+      },
+      {
+        lt: 15000000n,
+        now: 1774201735,
+        outMessagesCount: 0,
+        oldStatus: 'active',
+        endStatus: 'active',
+        totalFees: 123600n,
+        mode: undefined,
+        from: 'EQD31XxvV2VrPvYBcvYoyA63k9n0Uoq9HZjzNirgcKCXgEW3 (SwarmCoordinator)',
+        to: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        on: 'EQD-N3h6Wk-IEIVhXtz--H9qc5Nyk5M2VsTTavuytejk8d0X (TreasuryContract-poster)',
+        value: 48721600n,
+        ec: [],
+        body: x{FFFFFFFF000020070000000000000000},
+        inMessageBounced: true,
+        inMessageBounceable: false,
+        op: '4294967295',
+        initData: undefined,
+        initCode: undefined,
+        deploy: false,
+        aborted: false,
+        destroyed: false,
+        exitCode: 0,
+        actionResultCode: 0,
+        success: true,
+        failReason: undefined
+      }
+    ] to contain a transaction that matches pattern { success: false, exitCode: 2009 }
+
+      171 |         });
+      172 |         const tx = await coordinator.sendCancelTask(poster.getSender(), { taskId: 0n });
+    > 173 |         expect(tx.transactions).toHaveTransaction({ success: false, exitCode: 2009 });
+          |                                 ^
+      174 |     });
+      175 |
+      176 |     it('rejects operations on non-existent task', async () => {
+
+      at Object.<anonymous> (tests/SwarmCoordinator.spec.ts:173:33)
+
+  ● SwarmCoordinator › two tasks can coexist independently
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 2n
+    Received: 0n
+
+      188 |             workDeadlineDelta: 7200, payment: toNano('2'),
+      189 |         });
+    > 190 |         expect(await coordinator.getNextTaskId()).toBe(2n);
+          |                                                   ^
+      191 |     });
+      192 | });
+
+      at Object.<anonymous> (tests/SwarmCoordinator.spec.ts:190:51)
+
+PASS tests/ReputationUpdater.spec.ts (8.36 s)
+  ReputationUpdater
+    ✓ starts with 0 agents (524 ms)
+    ✓ returns 500 (initial score) for unknown agent (103 ms)
+    ✓ returns 0 badges for unknown agent (105 ms)
+    ✓ increases score by 10 for small task success (<1 TON) (120 ms)
+    ✓ increases score by 20 for medium task success (1–10 TON) (255 ms)
+    ✓ increases score by 40 for large task success (>10 TON) (242 ms)
+    ✓ decreases score by 50 on failure (126 ms)
+    ✓ clamps score to 0 (297 ms)
+    ✓ clamps score to 1000 max (553 ms)
+    ✓ awards BADGE_FIRST_TASK after first completion (95 ms)
+    ✓ awards BADGE_PIONEER to new agents (100 ms)
+    ✓ awards BADGE_TEN_TASKS after 10 completions (219 ms)
+    ✓ isTrusted returns true for score above threshold (137 ms)
+    ✓ isTrusted returns false for unknown agent vs high threshold (115 ms)
+    ✓ rejects TaskCompleted from non-coordinator (108 ms)
+    ✓ counts each unique agent once (91 ms)
+
+SKIP Reporter mode: gas
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       11 failed, 31 passed, 42 total
+Snapshots:   0 total
+Time:        8.968 s
+Ran all test suites.
+Error: Command failed: npm test -- 
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at checkExecSyncError (node:child_process:916:11)
+    at execSync (node:child_process:988:15)
+    at test (/home/heeral/TON/TONSwarmOS/SwarmOS/node_modules/@ton/blueprint/dist/cli/test.js:41:34)
+    at main (/home/heeral/TON/TONSwarmOS/SwarmOS/node_modules/@ton/blueprint/dist/cli/cli.js:114:11)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 25615,
+  stdout: null,
+  stderr: null
+}
+

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "ton-swarmos": {
+      "command": "node",
+      "args": ["/home/heeral/TON/TONSwarmOS/SwarmOS/mcp/dist/index.js"],
+      "env": {
+        "TON_ENDPOINT": "https://testnet.toncenter.com/api/v2",
+        "TON_API_KEY":"93e025f3b8d2a771dbce39d9641e2b607110c5db3b7d1dc6c82990a210f60c06",
+        "REGISTRY_ADDRESS": "EQAHc9UjDJ89VNLgv3oBlLvEKEftbUQYPoYBNPi-jXhYEnDA",
+        "COORDINATOR_ADDRESS": "EQDyYG3hJV4C2blRGl3kt0m7eYJvDEuwNLmpI4LWhubr88w7",
+        "REPUTATION_ADDRESS": "EQBET0s93LJ_5AfLqMQsfMzTdEMJz9HA6jkFccQeZkIiCPOn"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@ton-swarmos/mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for TON SwarmOS — AI agent swarm coordination on TON blockchain",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "ton-swarmos-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@ton/core": "^0.62.0",
+    "@ton/ton": "^15.0.0",
+    "@ton/crypto": "^3.3.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.3.0"
+  }
+}

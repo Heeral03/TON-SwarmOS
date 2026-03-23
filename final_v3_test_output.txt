@@ -1,0 +1,71 @@
+(node:26158) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+> SwarmOS@0.0.1 test
+> jest --verbose
+
+(node:26184) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:26339) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:26333) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:26332) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+PASS tests/AgentRegistry.spec.ts (7.122 s)
+  AgentRegistry
+    ✓ deploys with 0 agents (469 ms)
+    ✓ owner is set correctly (107 ms)
+    ✓ registers agent successfully (124 ms)
+    ✓ rejects stake below minimum (102 ms)
+    ✓ rejects duplicate registration (218 ms)
+    ✓ registers two agents independently (235 ms)
+    ✓ updates agent listing (131 ms)
+    ✓ rejects update from unregistered agent (110 ms)
+    ✓ deactivates agent (212 ms)
+    ✓ rejects double deactivation (154 ms)
+    ✓ reactivates agent (142 ms)
+    ✓ rejects activate on already active agent (126 ms)
+
+PASS tests/ReputationUpdater.spec.ts (8.451 s)
+  ReputationUpdater
+    ✓ starts with 0 agents (468 ms)
+    ✓ returns 500 (initial score) for unknown agent (119 ms)
+    ✓ returns 0 badges for unknown agent (113 ms)
+    ✓ increases score by 10 for small task success (<1 TON) (197 ms)
+    ✓ increases score by 20 for medium task success (1–10 TON) (254 ms)
+    ✓ increases score by 40 for large task success (>10 TON) (230 ms)
+    ✓ decreases score by 50 on failure (156 ms)
+    ✓ clamps score to 0 (412 ms)
+    ✓ clamps score to 1000 max (438 ms)
+    ✓ awards BADGE_FIRST_TASK after first completion (87 ms)
+    ✓ awards BADGE_PIONEER to new agents (124 ms)
+    ✓ awards BADGE_TEN_TASKS after 10 completions (300 ms)
+    ✓ isTrusted returns true for score above threshold (86 ms)
+    ✓ isTrusted returns false for unknown agent vs high threshold (89 ms)
+    ✓ rejects TaskCompleted from non-coordinator (107 ms)
+    ✓ counts each unique agent once (199 ms)
+
+PASS tests/SwarmCoordinator.spec.ts (8.488 s)
+  SwarmCoordinator
+    ✓ deploys with nextTaskId = 0 (634 ms)
+    ✓ deploys with 0 accumulated fees (126 ms)
+    ✓ posts task and increments ID (211 ms)
+    ✓ rejects post task with payment below minimum (210 ms)
+    ✓ bids on open task (290 ms)
+    ✓ rejects bid above budget (195 ms)
+    ✓ rejects duplicate bid from same agent (165 ms)
+    ✓ accepts bid (143 ms)
+    ✓ rejects accept from non-poster (253 ms)
+    ✓ full lifecycle: post → bid → accept → submit → verify (171 ms)
+    ✓ cancels task with no bids and refunds poster (101 ms)
+    ✓ cannot cancel task that has bids (148 ms)
+    ✓ rejects operations on non-existent task (121 ms)
+    ✓ two tasks can coexist independently (111 ms)
+
+SKIP Reporter mode: gas
+Test Suites: 3 passed, 3 total
+Tests:       42 passed, 42 total
+Snapshots:   0 total
+Time:        9.041 s
+Ran all test suites.
