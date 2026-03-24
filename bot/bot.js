@@ -398,13 +398,27 @@ bot.command('verify', async (ctx) => {
     const id = BigInt(ctx.match);
     if (!id && id !== 0n) return ctx.reply('Usage: `/verify <id>`');
     const seqno = await contract.getSeqno();
-    await contract.sendTransfer({
+    const ok = await contract.sendTransfer({
         seqno, secretKey: keyPair.secretKey,
         messages: [internal({
             to: COORDINATOR_ADDRESS, value: toNano('0.05'),
             body: beginCell().storeUint(OP_VERIFY_RESULT, 32).storeUint(id, 64).endCell()
         })]
     });
+    
+    // PUSH TO LIVE HEARTBEAT
+    try {
+        await fetch(`http://localhost:3000/api/logs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                status: 'success', 
+                badge: 'Verified', 
+                msg: `Task #${id} verified by poster. Funds released!` 
+            })
+        });
+    } catch (e) {}
+
     ctx.reply('✅ *Work Verified!* Payment released.');
 });
 

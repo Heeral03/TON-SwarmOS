@@ -36,6 +36,9 @@ const AGENT_PRICE         = toNano(process.env.AGENT_PRICE           || '0.03');
 const POLL_INTERVAL_MS    = parseInt(process.env.POLL_INTERVAL_MS    || '15000'); // poll every 15s
 const BID_RATIO           = parseFloat(process.env.BID_RATIO         || '0.70'); // bid 70% of budget
 
+// Live Heartbeat Config
+const TMA_SERVER_URL      = process.env.TMA_SERVER_URL || 'http://localhost:3000';
+
 // ── Opcodes ─────────────────────────────────────────────────────
 const OP_REGISTER_AGENT = 0x1001;
 const OP_BID_TASK       = 0x2002;
@@ -77,6 +80,18 @@ function log(emoji, msg) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+async function pushLog(status, badge, msg) {
+    try {
+        await fetch(`${TMA_SERVER_URL}/api/logs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status, badge, msg })
+        });
+    } catch (e) {
+        // Silent fail to not break agent if server is down
+    }
+}
+
 async function sendTx(to, value, body) {
     const seqno = await contract.getSeqno();
     await contract.sendTransfer({
@@ -111,7 +126,9 @@ async function ensureRegistered() {
         const res = await ton.runMethod(REGISTRY_ADDRESS, 'getAgent', tb.build());
         const cell = res.stack.readCellOpt();
         if (cell) {
-            log('✅', 'Already registered in AgentRegistry');
+            const msg = 'Already registered in AgentRegistry';
+            log('✅', msg);
+            await pushLog('success', 'Registry', msg);
             return;
         }
     } catch (_) {}
@@ -125,7 +142,9 @@ async function ensureRegistered() {
         .endCell();
 
     await sendTx(REGISTRY_ADDRESS, toNano('1.05'), body);
-    log('✅', `Registered! Capability: ${AGENT_CAPABILITY}, Price: ${fromNano(AGENT_PRICE)} TON/unit`);
+    const msg = `Registered! Capability: ${AGENT_CAPABILITY}, Price: ${fromNano(AGENT_PRICE)} TON/unit`;
+    log('✅', msg);
+    await pushLog('success', 'Registry', msg);
 }
 
 // ── Task Processing ──────────────────────────────────────────────
@@ -165,7 +184,9 @@ async function handleOpenTask(taskId, task) {
     const ok = await sendTx(COORDINATOR_ADDRESS, toNano('0.05'), body);
     if (ok) {
         bidsSent.add(taskId);
-        log('✅', `Bid sent for Task ${taskId}!`);
+        const msg = `Bid sent for Task ${taskId}! (${fromNano(bidAmount)} TON)`;
+        log('✅', msg);
+        await pushLog('pending', 'Bidding', msg);
     }
 }
 
@@ -210,10 +231,16 @@ async function handleAssignedTask(taskId, task) {
 
     const ok = await sendTx(COORDINATOR_ADDRESS, toNano('0.05'), body);
     if (ok) {
-        log('✅', `Task ${taskId} submitted! Waiting for poster to verify...`);
-        log('💰', `Expected payment: ${fromNano(task.winningBid || 0n)} TON`);
+        const msg = `Task ${taskId} submitted! Hash: 0x${resultHash.toString(16).slice(0, 10)}...`;
+        log('✅', msg);
+        await pushLog('neon', 'Result', msg);
+        
+        const payMsg = `Expected payment: ${fromNano(task.winningBid || 0n)} TON`;
+        log('💰', payMsg);
+        await pushLog('success', 'Payday', `Task #${taskId} finished. ${payMsg}`);
     } else {
         log('❌', `Failed to submit Task ${taskId} on-chain.`);
+        await pushLog('info', 'Error', `Failed to submit Task #${taskId} results.`);
     }
 }
 
@@ -282,6 +309,7 @@ await printStatus();
 await ensureRegistered();
 
 log('🚀', `Agent is live! Watching for tasks on TON testnet...`);
+await pushLog('info', 'Uplink', 'Agent is live! Watching for tasks on TON testnet...');
 log('💡', `Post a task in bot: /post 1 0.3 Get me top 10 crypto prices`);
 
 // Main loop

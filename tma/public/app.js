@@ -23,6 +23,7 @@ async function init() {
     updateHeartbeat();
     setInterval(updateStats, 10000);
     setInterval(updateLeaderboard, 30000);
+    setInterval(updateHeartbeat, 5000); // Poll logs every 5s
 }
 
 async function runGetMethod(address, method, stack = []) {
@@ -170,31 +171,30 @@ function enterWarRoom() {
     }, 800);
 }
 
-// HUMAN-READABLE HEARTBEAT TIMELINE
-function updateHeartbeat() {
-    const container = document.getElementById('heartbeat-feed');
-    const events = [
-        { status: 'success', badge: 'Uplink', msg: 'Agent EQD6... connection verified.' },
-        { status: 'info', badge: 'Sync', msg: 'Coordinator contract state synchronized at block 41029324.' },
-        { status: 'pending', badge: 'Bidding', msg: 'Agent EQD6... submitted a bid of 0.24 TON for Task #0.' },
-        { status: 'info', badge: 'Awarded', msg: 'Task #0 successfully awarded to Agent EQD6... (Score: 510).' },
-        { status: 'neon', badge: 'Execute', msg: 'Analyst Module activated. Processing data vectors...' },
-        { status: 'neon', badge: 'Result', msg: 'Encrypted result hash 0x41a2... submitted to TON.' },
-        { status: 'ton', badge: 'Settle', msg: 'Reputation Updater confirmed. Agent score +10.' },
-        { status: 'success', badge: 'Paid', msg: '0.24 TON released from escrow to Agent EQD6... via TON Connect.' }
-    ];
+// REAL-TIME HEARTBEAT BRIDGE
+let lastLogId = 0;
 
-    container.innerHTML = "";
-    events.forEach((ev, i) => {
-        setTimeout(() => {
+async function updateHeartbeat() {
+    const container = document.getElementById('heartbeat-feed');
+    if (!container) return;
+
+    try {
+        const res = await fetch('/api/logs');
+        const logs = await res.json();
+        
+        // Only process NEW logs
+        const newLogs = logs.filter(l => l.id > lastLogId);
+        if (newLogs.length === 0) return;
+
+        newLogs.forEach(ev => {
             const row = document.createElement('div');
             row.className = 'heartbeat-row reveal active';
             
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            const time = new Date(ev.id);
+            const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}:${time.getSeconds().toString().padStart(2, '0')}`;
 
             row.innerHTML = `
-                <div class="hb-indicator ${i === events.length - 1 ? 'indicator-active' : ''}"></div>
+                <div class="hb-indicator indicator-active"></div>
                 <div class="hb-content">
                     <span class="hb-time">${timeStr}</span>
                     <div class="hb-msg">
@@ -204,8 +204,25 @@ function updateHeartbeat() {
                 </div>
             `;
             container.prepend(row);
-        }, i * 2000); // 2 second intervals for a steady 'heartbeat'
-    });
+            
+            // Deactivate previous indicators
+            const indicators = container.querySelectorAll('.hb-indicator');
+            if (indicators.length > 1) {
+                indicators[1].classList.remove('indicator-active');
+            }
+
+            if (ev.id > lastLogId) lastLogId = ev.id;
+        });
+
+        // Keep UI clean (last 15 logs)
+        const rows = container.querySelectorAll('.heartbeat-row');
+        if (rows.length > 15) {
+            for (let i = 15; i < rows.length; i++) rows[i].remove();
+        }
+
+    } catch (e) {
+        console.error("Heartbeat sync failed", e);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);

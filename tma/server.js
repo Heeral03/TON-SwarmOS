@@ -6,6 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '../bot/.env') });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
 app.use(cors());
 
 // Aggressive Bypass for Telegram/Ngrok
@@ -37,6 +38,33 @@ app.get('/api/config', (req, res) => {
 // Priority 4: Mandatory Root Route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// IN-MEMORY LOG STORE
+const logsBank = [
+    { id: Date.now(), status: 'success', badge: 'System', msg: 'TON SwarmOS Neural Bridge established.' }
+];
+
+app.post('/api/logs', (req, res) => {
+    // Check if body exists (fall-back for parsing issues)
+    if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({ error: 'Invalid request body' });
+    }
+    
+    const { status, badge, msg } = req.body;
+    if (!status || !badge || !msg) {
+        return res.status(400).json({ error: 'Missing fields' });
+    }
+
+    const newLog = { id: Date.now(), status, badge, msg };
+    logsBank.push(newLog);
+    if (logsBank.length > 50) logsBank.shift(); // Keep last 50
+    console.log(`[LOG PUSH] ${badge}: ${msg}`);
+    res.json({ success: true });
+});
+
+app.get('/api/logs', (req, res) => {
+    res.json(logsBank);
 });
 
 // Final fallback
