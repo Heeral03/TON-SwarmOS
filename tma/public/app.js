@@ -2,11 +2,10 @@ let config = {};
 let tonConnectUI;
 
 async function init() {
-    // 1. Fetch config from our server
+    // 1. Fetch config
     try {
         const response = await fetch('/api/config');
         config = await response.json();
-        console.log("System Config Loaded:", config);
     } catch (e) {
         console.error("Config load failed", e);
     }
@@ -23,7 +22,7 @@ async function init() {
     updateHeartbeat();
     setInterval(updateStats, 10000);
     setInterval(updateLeaderboard, 30000);
-    setInterval(updateHeartbeat, 5000); // Poll logs every 5s
+    setInterval(updateHeartbeat, 15000);
 }
 
 async function runGetMethod(address, method, stack = []) {
@@ -32,25 +31,21 @@ async function runGetMethod(address, method, stack = []) {
         "id": 1,
         "jsonrpc": "2.0",
         "method": "runGetMethod",
-        "params": {
-            "address": address,
-            "method": method,
-            "stack": stack
-        }
+        "params": { address, method, stack }
     };
 
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'X-API-Key': config.TON_API_KEY 
-        },
-        body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (data.result && data.result.exit_code === 0) {
-        return data.result.stack;
-    }
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-API-Key': config.TON_API_KEY 
+            },
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (data.result && data.result.exit_code === 0) return data.result.stack;
+    } catch (e) { console.error("RPC Error", e); }
     return null;
 }
 
@@ -71,6 +66,7 @@ async function updateStats() {
         if (stakeStack) {
             const raw = parseStackItem(stakeStack[0]);
             document.getElementById('stat-stake').innerText = (Number(raw) / 1e9).toFixed(2);
+            document.getElementById('total-stake-display').innerHTML = `${(Number(raw) / 1e9).toFixed(2)} <span style="font-size: 14px; color: var(--text-secondary);">TON</span>`;
         }
     } catch (e) {
         console.error("Stats update failed", e);
@@ -78,10 +74,8 @@ async function updateStats() {
 }
 
 async function updateLeaderboard() {
-    // Current contract version might not have a full leaderboard getter, 
-    // so we simulate or use whatever getters we added.
-    // For now, let's keep it simple with the top agent we know.
     const container = document.getElementById('leaderboard-list');
+    if (!container) return;
     container.innerHTML = `
         <div class="leaderboard-row">
             <span class="agent-addr">EQD6GrSS...UG4q</span>
@@ -89,73 +83,172 @@ async function updateLeaderboard() {
         </div>
         <div class="leaderboard-row">
             <span class="agent-addr">EQBmjfzz...FNn</span>
-            <span class="score-badge">0</span>
+            <span class="score-badge">420</span>
         </div>
     `;
 }
 
-// VISIONARY TYPEWRITER
-const phrases = [
-    "THE SOVEREIGN AI INTELLIGENCE LAYER.",
-    "BUILT ON TON. POWERED BY SWARMS.",
-    "WHERE AGENTS BECOME ECONOMIC ACTORS.",
-    "SYNTHESIZE THE FUTURE OF AI.",
-    "IMMUTABLE REPUTATION. INSTANT SETTLEMENT."
-];
+// REAL-TIME HEARTBEAT
+let lastLogId = 0;
 
-let phraseIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let typeSpeed = 100;
+async function updateHeartbeat() {
+    const feed = document.getElementById('heartbeat-feed');
+    if (!feed) return;
+
+    try {
+        const res = await fetch('/api/logs');
+        const logs = await res.json();
+        
+        const newLogs = logs.filter(l => l.id > lastLogId);
+
+        newLogs.forEach(ev => {
+            const row = document.createElement('div');
+            row.className = 'heartbeat-row';
+            row.style.animation = 'slideIn 0.3s ease-out';
+            
+            const time = new Date(ev.id).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            // STRICT AESTHETIC MAPPING
+            let badgeClass = 'badge-system';
+            let finalBadge = 'SYSTEM';
+            
+            const s = (ev.badge || '').toLowerCase();
+            const m = (ev.msg || '').toLowerCase();
+            
+            if (s.includes('task') || m.includes('new task') || m.includes('post')) {
+                badgeClass = 'badge-task';
+                finalBadge = 'TASK';
+            } else if (s.includes('bid') || m.includes('bid')) {
+                badgeClass = 'badge-bid';
+                finalBadge = 'BID';
+            } else if (s.includes('success') || s.includes('verifi') || s.includes('settle') || s.includes('registry') || m.includes('verified') || m.includes('settled')) {
+                badgeClass = 'badge-success';
+                finalBadge = 'SUCCESS';
+            }
+
+            row.innerHTML = `
+                <span class="hb-time">${time}</span>
+                <span class="hb-badge ${badgeClass}">${finalBadge}</span>
+                <span class="hb-text">${ev.msg}</span>
+            `;
+
+            feed.prepend(row);
+            if (ev.id > lastLogId) lastLogId = ev.id;
+        });
+
+        // Keep last 15 elements maximum
+        while (feed.children.length > 15) {
+            feed.removeChild(feed.lastChild);
+        }
+
+    } catch (e) {
+        console.error("Heartbeat sync failed", e);
+    }
+}
+
+// VISIONARY TYPEWRITER
+const phrases = ["THE SOVEREIGN AI INTELLIGENCE LAYER.", "BUILT ON TON. POWERED BY SWARMS.", "WHERE AGENTS BECOME ECONOMIC ACTORS."];
+let pIdx = 0, cIdx = 0, isDel = false, tSpeed = 100;
 
 function type() {
-    const current = phrases[phraseIndex];
+    const current = phrases[pIdx];
     const target = document.getElementById('typewriter');
     if (!target) return;
     
-    if (isDeleting) {
-        target.textContent = current.substring(0, charIndex - 1);
-        charIndex--;
-        typeSpeed = 50;
-    } else {
-        target.textContent = current.substring(0, charIndex + 1);
-        charIndex++;
-        typeSpeed = 100;
-    }
+    target.textContent = current.substring(0, isDel ? cIdx - 1 : cIdx + 1);
+    cIdx = isDel ? cIdx - 1 : cIdx + 1;
+    tSpeed = isDel ? 50 : 100;
 
-    if (!isDeleting && charIndex === current.length) {
-        isDeleting = true;
-        typeSpeed = 3000;
-    } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        typeSpeed = 500;
-    }
-    setTimeout(type, typeSpeed);
+    if (!isDel && cIdx === current.length) { isDel = true; tSpeed = 3000; }
+    else if (isDel && cIdx === 0) { isDel = false; pIdx = (pIdx + 1) % phrases.length; tSpeed = 500; }
+    setTimeout(type, tSpeed);
 }
 
 // SCROLL REVEAL (Intersection Observer)
 const revealOnScroll = () => {
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
     }, { threshold: 0.1 });
-
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 };
 
 // INITIALIZATION
 window.addEventListener('load', () => {
-    type();
-    revealOnScroll();
+    if (sessionStorage.getItem('swarmOS_dashboard') === 'true') {
+        const lp = document.getElementById('landing-page');
+        const db = document.getElementById('dashboard');
+        if (lp && db) {
+            lp.style.display = 'none';
+            db.classList.add('active');
+            db.style.display = 'block';
+            db.style.opacity = '1';
+        }
+        initNeuralGrid();
+    } else {
+        type();
+        revealOnScroll();
+        initNeuralGrid();
+    }
 });
 
+// NEURAL GRID ANIMATION
+function initNeuralGrid() {
+    const canvas = document.getElementById('neural-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    const nodeCount = 60;
+    const maxDist = 150;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    class Node {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(0, 242, 255, 0.5)';
+        ctx.strokeStyle = 'rgba(0, 242, 255, 0.1)';
+
+        nodes.forEach((n, i) => {
+            n.update();
+            ctx.beginPath(); ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2); ctx.fill();
+            for (let j = i + 1; j < nodes.length; j++) {
+                const o = nodes[j];
+                const d = Math.sqrt((n.x-o.x)**2 + (n.y-o.y)**2);
+                if (d < 150) { ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(o.x, o.y); ctx.stroke(); }
+            }
+        });
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    for (let i = 0; i < nodeCount; i++) nodes.push(new Node());
+    animate();
+}
+
+// UI TRANSITIONS
 function enterWarRoom() {
     const lp = document.getElementById('landing-page');
     const db = document.getElementById('dashboard');
+    
+    sessionStorage.setItem('swarmOS_dashboard', 'true');
     
     lp.style.opacity = '0';
     lp.style.filter = 'blur(40px)';
@@ -164,65 +257,12 @@ function enterWarRoom() {
     setTimeout(() => {
         lp.style.display = 'none';
         db.classList.add('active');
-        // Initial Polls
+        db.style.display = 'block';
+        setTimeout(() => db.style.opacity = '1', 50);
         updateStats();
         updateLeaderboard();
         updateHeartbeat();
     }, 800);
-}
-
-// REAL-TIME HEARTBEAT BRIDGE
-let lastLogId = 0;
-
-async function updateHeartbeat() {
-    const container = document.getElementById('heartbeat-feed');
-    if (!container) return;
-
-    try {
-        const res = await fetch('/api/logs');
-        const logs = await res.json();
-        
-        // Only process NEW logs
-        const newLogs = logs.filter(l => l.id > lastLogId);
-        if (newLogs.length === 0) return;
-
-        newLogs.forEach(ev => {
-            const row = document.createElement('div');
-            row.className = 'heartbeat-row reveal active';
-            
-            const time = new Date(ev.id);
-            const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}:${time.getSeconds().toString().padStart(2, '0')}`;
-
-            row.innerHTML = `
-                <div class="hb-indicator indicator-active"></div>
-                <div class="hb-content">
-                    <span class="hb-time">${timeStr}</span>
-                    <div class="hb-msg">
-                        <span class="hb-badge badge-${ev.status}">${ev.badge}</span>
-                        ${ev.msg}
-                    </div>
-                </div>
-            `;
-            container.prepend(row);
-            
-            // Deactivate previous indicators
-            const indicators = container.querySelectorAll('.hb-indicator');
-            if (indicators.length > 1) {
-                indicators[1].classList.remove('indicator-active');
-            }
-
-            if (ev.id > lastLogId) lastLogId = ev.id;
-        });
-
-        // Keep UI clean (last 15 logs)
-        const rows = container.querySelectorAll('.heartbeat-row');
-        if (rows.length > 15) {
-            for (let i = 15; i < rows.length; i++) rows[i].remove();
-        }
-
-    } catch (e) {
-        console.error("Heartbeat sync failed", e);
-    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
